@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:formation_flutter/model/favorites_manager.dart';
+import 'package:formation_flutter/model/product.dart';
 import 'package:formation_flutter/res/app_icons.dart';
 import 'package:formation_flutter/screens/product/product_fetcher.dart';
 import 'package:formation_flutter/screens/product/states/empty/product_page_empty.dart';
@@ -6,11 +8,32 @@ import 'package:formation_flutter/screens/product/states/error/product_page_erro
 import 'package:formation_flutter/screens/product/states/success/product_page_body.dart';
 import 'package:provider/provider.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   const ProductPage({super.key, required this.barcode})
     : assert(barcode.length > 0);
 
   final String barcode;
+
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  @override
+  void initState() {
+    super.initState();
+    FavoritesManager().addListener(_onFavoritesChanged);
+  }
+
+  @override
+  void dispose() {
+    FavoritesManager().removeListener(_onFavoritesChanged);
+    super.dispose();
+  }
+
+  void _onFavoritesChanged() {
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +41,7 @@ class ProductPage extends StatelessWidget {
         MaterialLocalizations.of(context);
 
     return ChangeNotifierProvider<ProductFetcher>(
-      create: (_) => ProductFetcher(barcode: barcode),
+      create: (_) => ProductFetcher(barcode: widget.barcode),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -30,10 +53,11 @@ class ProductPage extends StatelessWidget {
                   ProductFetcherError(error: var err) => ProductPageError(
                     error: err,
                   ),
-                  ProductFetcherSuccess() => ProductPageBody(),
+                  ProductFetcherSuccess(product: var product) => _buildSuccess(context, notifier, product),
                 };
               },
             ),
+            // Back button
             PositionedDirectional(
               top: 0.0,
               start: 0.0,
@@ -43,18 +67,36 @@ class ProductPage extends StatelessWidget {
                 onPressed: Navigator.of(context).pop,
               ),
             ),
+            // Favorite star button
             PositionedDirectional(
               top: 0.0,
               end: 0.0,
-              child: _HeaderIcon(
-                icon: AppIcons.share,
-                tooltip: materialLocalizations.shareButtonLabel,
+              child: Consumer<ProductFetcher>(
+                builder: (context, notifier, _) {
+                  final state = notifier.state;
+                  if (state is ProductFetcherSuccess) {
+                    final product = state.product;
+                    final isFav = FavoritesManager().isFavorite(product.barcode);
+                    return _HeaderIcon(
+                      icon: isFav ? Icons.star : Icons.star_border,
+                      tooltip: isFav ? 'Retirer des favoris' : 'Ajouter aux favoris',
+                      onPressed: () {
+                        FavoritesManager().toggleFavorite(product);
+                      },
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildSuccess(BuildContext context, ProductFetcher notifier, Product product) {
+    return ProductPageBody();
   }
 }
 

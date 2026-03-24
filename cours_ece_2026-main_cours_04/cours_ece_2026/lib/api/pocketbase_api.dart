@@ -1,7 +1,7 @@
 import 'package:pocketbase/pocketbase.dart';
 
 class PocketBaseAPI {
-  static const String _baseUrl = 'http://10.0.2.2:8090';
+  static const String _baseUrl = 'http://127.0.0.1:8090';
 
   // Singleton
   static final PocketBaseAPI _instance = PocketBaseAPI._internal();

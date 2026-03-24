@@ -17,9 +17,9 @@ class HomePageEmpty extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Spacer(flex: 20),
+          const Spacer(flex: 20),
           SvgPicture.asset(AppVectorialImages.illEmpty),
-          Spacer(flex: 10),
+          const Spacer(flex: 10),
           Expanded(
             flex: 20,
             child: Column(
@@ -27,28 +27,37 @@ class HomePageEmpty extends StatelessWidget {
                 Text(
                   localizations.my_scans_screen_description,
                   textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'Avenir',
+                    fontSize: 16,
+                    color: AppColors.grey3,
+                  ),
                 ),
-                Spacer(flex: 5),
-                FractionallySizedBox(
-                  widthFactor: 0.5,
-                  child: TextButton(
-                    style: OutlinedButton.styleFrom(
+                const Spacer(flex: 5),
+                SizedBox(
+                  width: 275,
+                  height: 45,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
                       foregroundColor: AppColors.blue,
                       backgroundColor: AppColors.yellow,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(22.0)),
-                      ),
+                      shape: const StadiumBorder(),
+                      elevation: 0,
                     ),
                     onPressed: onScan,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            localizations.my_scans_screen_button.toUpperCase(),
+                        Text(
+                          localizations.my_scans_screen_button.toUpperCase(),
+                          style: const TextStyle(
+                            fontFamily: 'Avenir',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16,
                           ),
                         ),
                         const SizedBox(width: 10.0),
-                        Icon(Icons.arrow_forward_outlined),
+                        const Icon(Icons.arrow_forward_outlined, size: 20),
                       ],
                     ),
                   ),
@@ -56,7 +65,7 @@ class HomePageEmpty extends StatelessWidget {
               ],
             ),
           ),
-          Spacer(flex: 20),
+          const Spacer(flex: 20),
         ],
       ),
     );

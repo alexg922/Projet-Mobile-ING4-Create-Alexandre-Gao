@@ -53,17 +53,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white, // Changed from greyBackground to match image
+      backgroundColor:
+          AppColors.white, // Changed from greyBackground to match image
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 1,
@@ -107,7 +105,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email, color: AppColors.blue), // Added icon from image
+                    prefixIcon: Icon(
+                      Icons.email,
+                      color: AppColors.blue,
+                    ), // Added icon from image
                     hintText: 'Adresse email',
                     hintStyle: TextStyle(
                       color: AppColors.greyPlaceholder,
@@ -145,7 +146,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordController,
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock, color: AppColors.blue), // Added lock icon
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: AppColors.blue,
+                    ), // Added lock icon
                     hintText: 'Mot de passe',
                     hintStyle: TextStyle(
                       color: AppColors.greyPlaceholder,
@@ -192,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   SizedBox(
-                        width: 20,
+                    width: 20,
                     height: 20,
                     child: Checkbox(
                       value: _stayConnected,
@@ -266,8 +270,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(AppColors.blue),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.blue,
+                            ),
                           ),
                         )
                       : Row(
